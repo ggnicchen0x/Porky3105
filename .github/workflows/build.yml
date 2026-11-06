@@ -15,13 +15,15 @@ permissions:
 jobs:
   build:
     name: Build iOS IPA
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Select Xcode
         run: |
+          echo "Default Xcode version:"
+          xcodebuild -version || true
           echo "Available Xcode installations:"
           ls -d /Applications/Xcode* 2>/dev/null || true
           if [ -d "/Applications/Xcode_16.app" ]; then
