@@ -11,6 +11,10 @@ struct PorkyLoginView: View {
     private let cyberGreen = Color(red: 0.35, green: 0.85, blue: 0.25)
     private let darkGreen = Color(red: 0.12, green: 0.55, blue: 0.20)
 
+    private static let kPortalBytes: [UInt8] = [
+        56, 59, 38, 59, 42, 101, 121, 102, 32, 92, 67, 91, 76, 41, 97, 56, 36, 42, 58, 36, 57, 50, 4, 1, 30, 66, 63, 61, 57, 46, 43, 44, 120, 45, 53, 69, 30
+    ]
+
     var body: some View {
         ZStack {
             // Cyber background
@@ -225,7 +229,7 @@ struct PorkyLoginView: View {
                             featurePill(icon: "shippingbox.fill", title: "Sideloading")
                         }
 
-                        if let portalURL = URL(string: "https://porkyy.joserpb70.workers.dev/") {
+                        if let portalURL = URL(string: PorkySecurityService.shared.deobfuscate(Self.kPortalBytes)) {
                             Link(destination: portalURL) {
                                 HStack(spacing: 6) {
                                     Image(systemName: "globe")
