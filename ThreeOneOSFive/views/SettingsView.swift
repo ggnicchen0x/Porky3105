@@ -101,6 +101,36 @@ struct SettingsView: View {
                 } footer: {
                     Text(language.text("settings.supported_versions_footer"))
                 }
+
+                Section("PORKY VIP CONTROL") {
+                    HStack {
+                        Text("License Status")
+                        Spacer()
+                        HStack(spacing: 5) {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 8, height: 8)
+                            Text("ACTIVE VIP")
+                                .font(.caption.weight(.bold))
+                                .foregroundStyle(Color.green)
+                        }
+                    }
+
+                    if !PorkyAuthManager.shared.currentKey.isEmpty {
+                        LabeledContent("Key", value: PorkyAuthManager.shared.maskedKey)
+                    }
+
+                    if !PorkyAuthManager.shared.expiryDate.isEmpty {
+                        LabeledContent("Expires", value: PorkyAuthManager.shared.formattedExpiry)
+                    }
+
+                    Button(role: .destructive) {
+                        PorkyAuthManager.shared.deactivate()
+                        dismiss()
+                    } label: {
+                        Label("Deactivate VIP Key", systemImage: "rectangle.portrait.and.arrow.right")
+                    }
+                }
             }
             .tint(AppTheme.accent)
             .navigationTitle(language.text("settings.title"))

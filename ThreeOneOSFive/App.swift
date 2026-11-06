@@ -8,6 +8,7 @@ struct ThreeOneOSFiveApp: App {
     @StateObject private var fileOperationCoordinator = FileOperationCoordinator()
     @StateObject private var patchStore = PatchProjectStore()
     @StateObject private var repositoryStore = PackageRepositoryStore()
+    @StateObject private var authManager = PorkyAuthManager.shared
     @AppStorage(AppLanguage.storageKey) private var languageCode = AppLanguage.english.rawValue
     @State private var showOnboarding = OnboardingStore.shouldShow()
     @Environment(\.scenePhase) private var scenePhase
@@ -25,45 +26,54 @@ struct ThreeOneOSFiveApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                ContentView()
-                    .environmentObject(appState)
-                    .environmentObject(patchDraftCoordinator)
-                    .environmentObject(fileOperationCoordinator)
-                    .environmentObject(patchStore)
-                    .environmentObject(repositoryStore)
-                    .environment(\.appLanguage, language)
-                    .environment(\.locale, language.locale)
-                    .opacity(showOnboarding ? 0 : 1)
-                    .allowsHitTesting(!showOnboarding)
+                if !authManager.isAuthenticated {
+                    PorkyLoginView(authManager: authManager)
+                        .transition(.opacity)
+                        .zIndex(2)
+                } else {
+                    ContentView()
+                        .environmentObject(appState)
+                        .environmentObject(patchDraftCoordinator)
+                        .environmentObject(fileOperationCoordinator)
+                        .environmentObject(patchStore)
+                        .environmentObject(repositoryStore)
+                        .environmentObject(authManager)
+                        .environment(\.appLanguage, language)
+                        .environment(\.locale, language.locale)
+                        .opacity(showOnboarding ? 0 : 1)
+                        .allowsHitTesting(!showOnboarding)
 
-                if showOnboarding {
-                    OnboardingView {
-                        OnboardingStore.markCompleted()
-                        withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.24)) {
-                            showOnboarding = false
+                    if showOnboarding {
+                        OnboardingView {
+                            OnboardingStore.markCompleted()
+                            withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.24)) {
+                                showOnboarding = false
+                            }
+                            appState.detectSupport()
                         }
-                        appState.detectSupport()
+                        .environment(\.appLanguage, language)
+                        .environment(\.locale, language.locale)
+                        .transition(
+                            reduceMotion
+                                ? .opacity
+                                : .opacity.combined(with: .scale(scale: 0.98))
+                        )
+                        .zIndex(1)
                     }
-                    .environment(\.appLanguage, language)
-                    .environment(\.locale, language.locale)
-                    .transition(
-                        reduceMotion
-                            ? .opacity
-                            : .opacity.combined(with: .scale(scale: 0.98))
-                    )
-                    .zIndex(1)
                 }
             }
+            .animation(.easeInOut(duration: 0.28), value: authManager.isAuthenticated)
             .onAppear {
-                if !showOnboarding {
+                if authManager.isAuthenticated && !showOnboarding {
                     appState.detectSupport()
                 }
             }
             .onChange(of: scenePhase) { phase in
-                guard phase == .active, !showOnboarding else { return }
+                guard phase == .active, authManager.isAuthenticated, !showOnboarding else { return }
                 appState.detectSupport()
             }
             .onOpenURL { url in
+                guard authManager.isAuthenticated else { return }
                 patchDraftCoordinator.presentImport(url)
             }
         }
