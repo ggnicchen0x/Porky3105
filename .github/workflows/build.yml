@@ -1,0 +1,65 @@
+name: Build Porky3105 IPA
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build iOS IPA
+    runs-on: macos-14
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Show Xcode & SDK info
+        run: |
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-path
+
+      - name: Build Application
+        run: |
+          xcodebuild clean build \
+            -project ThreeOneOSFive.xcodeproj \
+            -scheme 3105 \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build/DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      - name: Package IPA
+        run: |
+          mkdir -p Payload
+          cp -R build/DerivedData/Build/Products/Release-iphoneos/3105.app Payload/
+          zip -vr9 Porky3105.ipa Payload
+          shasum -a 256 Porky3105.ipa > Porky3105.ipa.sha256
+          ls -lh Porky3105.ipa
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Porky3105-ipa
+          path: |
+            Porky3105.ipa
+            Porky3105.ipa.sha256
+          if-no-files-found: error
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        with:
+          tag_name: v2.0-${{ github.run_number }}
+          name: Porky 3105 v2.0 (Build ${{ github.run_number }})
+          draft: false
+          prerelease: false
+          files: |
+            Porky3105.ipa
+            Porky3105.ipa.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
