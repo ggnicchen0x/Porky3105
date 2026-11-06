@@ -148,7 +148,7 @@ actor RepositoryImagePipeline {
         let task = Task<Data, Error> {
             var request = URLRequest(url: url)
             request.cachePolicy = .useProtocolCachePolicy
-            request.setValue("3105", forHTTPHeaderField: "User-Agent")
+            request.setValue("Porky", forHTTPHeaderField: "User-Agent")
             let (data, response) = try await session.data(for: request)
             guard let response = response as? HTTPURLResponse,
                   (200..<300).contains(response.statusCode),

@@ -4,7 +4,8 @@ import UniformTypeIdentifiers
 
 private enum PatchPackagePickerPolicy {
     static let packageType = UTType(filenameExtension: "3105") ?? .data
-    static let allowedContentTypes: [UTType] = [packageType, .data]
+    static let porkyPackageType = UTType(filenameExtension: "porky") ?? .data
+    static let allowedContentTypes: [UTType] = [packageType, porkyPackageType, .data]
     static let copiesSelectedDocument = true
 }
 

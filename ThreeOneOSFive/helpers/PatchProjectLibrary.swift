@@ -57,7 +57,43 @@ enum PatchProjectLibrary {
         return root
     }
 
+    static func seedBundledPackages(fileManager: FileManager = .default) {
+        guard let root = try? packageRootURL(fileManager: fileManager) else { return }
+
+        var candidateURLs: [URL] = []
+
+        let bundledSubdir = Bundle.main.bundleURL.appendingPathComponent("BundledPackages", isDirectory: true)
+        if let items = try? fileManager.contentsOfDirectory(at: bundledSubdir, includingPropertiesForKeys: nil) {
+            candidateURLs.append(contentsOf: items)
+        }
+
+        if let resDir = Bundle.main.url(forResource: "BundledPackages", withExtension: nil),
+           let resItems = try? fileManager.contentsOfDirectory(at: resDir, includingPropertiesForKeys: nil) {
+            candidateURLs.append(contentsOf: resItems)
+        }
+
+        if let bundleRootItems = try? fileManager.contentsOfDirectory(at: Bundle.main.bundleURL, includingPropertiesForKeys: nil) {
+            candidateURLs.append(contentsOf: bundleRootItems)
+        }
+
+        for sourceURL in candidateURLs {
+            let ext = sourceURL.pathExtension.lowercased()
+            guard ext == "3105" || ext == "porky" else { continue }
+            let destURL = root.appendingPathComponent(sourceURL.lastPathComponent)
+            if !fileManager.fileExists(atPath: destURL.path) {
+                do {
+                    try fileManager.copyItem(at: sourceURL, to: destURL)
+                    log("patch: seeded bundled package \(sourceURL.lastPathComponent)")
+                } catch {
+                    log("patch: error seeding \(sourceURL.lastPathComponent): \(error)")
+                }
+            }
+        }
+    }
+
     static func load(fileManager: FileManager = .default) -> [PatchLibraryItem] {
+        seedBundledPackages(fileManager: fileManager)
+
         guard let root = try? packageRootURL(fileManager: fileManager),
               let urls = try? fileManager.contentsOfDirectory(
                 at: root,
@@ -66,7 +102,7 @@ enum PatchProjectLibrary {
               ) else { return [] }
 
         var byID: [UUID: PatchLibraryItem] = [:]
-        for url in urls where url.pathExtension.lowercased() == "3105" {
+        for url in urls where url.pathExtension.lowercased() == "3105" || url.pathExtension.lowercased() == "porky" {
             do {
                 let data = try readPackage(at: url)
                 let summary = try PatchPackageCodec.inspect(data)

@@ -1,4 +1,4 @@
-"app.subtitle" = "MobileGestalt 编辑器";
+﻿"app.subtitle" = "MobileGestalt 编辑器";
 "app.capability_editor" = "MobileGestalt 功能编辑器";
 "common.close" = "关闭";
 "common.done" = "完成";
@@ -20,7 +20,7 @@
 "update.dismiss" = "不再显示";
 "patch.error.wrong_password" = "密码错误。";
 
-"attribution.title" = "关于 3105";
+"attribution.title" = "关于 Porky";
 "attribution.subtitle" = "项目信息";
 "attribution.link_section" = "项目链接";
 "attribution.url" = "URL";
@@ -31,20 +31,20 @@
 "onboarding.language_title" = "选择语言";
 "onboarding.language_subtitle" = "之后可在设置中更改。";
 "onboarding.language_hint" = "已选择：%@";
-"onboarding.welcome_title" = "欢迎使用 3105";
+"onboarding.welcome_title" = "欢迎使用 Porky";
 "onboarding.welcome_message" = "自定义与插件管理工具";
 "onboarding.welcome_badge" = "Porky 标识";
 "onboarding.versions_title" = "支持的 iOS 版本";
-"onboarding.versions_subtitle" = "3105 已在下列范围内验证。不支持的版本会被阻止。";
+"onboarding.versions_subtitle" = "Porky 已在下列范围内验证。不支持的版本会被阻止。";
 "onboarding.versions_footer" = "本设备：iOS %@（%@）";
 "onboarding.beta" = "Beta";
 "onboarding.developer_beta" = "开发者 Beta %@";
 "onboarding.public_beta" = "公开 Beta %@";
 "onboarding.install_title" = "证书要求";
-"onboarding.install_message" = "3105 需要受支持的签名方式才能访问设备功能。";
+"onboarding.install_message" = "Porky 需要受支持的签名方式才能访问设备功能。";
 "onboarding.install_ok" = "支持企业证书，包括 eSign 和类似的企业安装方式。";
 "onboarding.install_bad" = "不支持 SideStore、AltStore、3uTools 或 LiveContainer。";
-"onboarding.install_jailbreak" = "在 iOS 17 至 iOS 18.7.1 上，如果设备已越狱，3105 将无法运行。";
+"onboarding.install_jailbreak" = "在 iOS 17 至 iOS 18.7.1 上，如果设备已越狱，Porky 将无法运行。";
 "onboarding.install_footer" = "继续前，请在未越狱的设备上使用受支持的证书。";
 
 "dashboard.exploit_access" = "漏洞利用权限";
@@ -73,7 +73,7 @@
 "dashboard.kernel_running" = "正在激活…";
 "dashboard.kernel_active" = "已激活";
 "dashboard.kernel_inactive" = "未激活";
-"dashboard.enterprise_signing" = "3105 仅在使用企业证书签名时运行。不支持 SideStore、AltStore、3uTools 或 LiveContainer。";
+"dashboard.enterprise_signing" = "Porky 仅在使用企业证书签名时运行。不支持 SideStore、AltStore、3uTools 或 LiveContainer。";
 "dashboard.features" = "功能";
 "dashboard.features_footer" = "开启清理或壁纸后，该功能才会显示在应用导航中。";
 "tab.home" = "主页";
@@ -101,7 +101,7 @@
 "cleaner.clean_button" = "清理 %@";
 "cleaner.cleaning" = "正在清理…";
 "cleaner.confirm_title" = "删除临时数据？";
-"cleaner.confirm_message" = "3105 将永久删除所选 %lld 个应用的 Library/Caches 和 tmp（%@）。请先关闭这些应用。下次打开时，重建缓存可能会使启动变慢。此操作无法撤销。";
+"cleaner.confirm_message" = "Porky 将永久删除所选 %lld 个应用的 Library/Caches 和 tmp（%@）。请先关闭这些应用。下次打开时，重建缓存可能会使启动变慢。此操作无法撤销。";
 "cleaner.confirm_action" = "立即清理";
 "cleaner.result_title" = "清理完成";
 "cleaner.result_message" = "已释放 %@，删除 %lld 个文件。有 %lld 个项目或应用无法清理。";
@@ -144,9 +144,9 @@
 "patch.private_hidden_title" = "私密补丁";
 "patch.private_hidden_message" = "作者已隐藏此补丁的文件和目标路径。你仍可在不查看内容的情况下应用或恢复。";
 "patch.target_bundle" = "目标 Bundle";
-"patch.workspace_bundle_footer" = "3105 会在可编辑的补丁工作区中创建此 Bundle 文件夹，且不会保存容器 UUID。";
+"patch.workspace_bundle_footer" = "Porky 会在可编辑的补丁工作区中创建此 Bundle 文件夹，且不会保存容器 UUID。";
 "patch.captured_content" = "已获取内容";
-"patch.workspace_edit_footer" = "创建后，可在“文件”中的 3105 工作区管理完整的 Bundle 目录树。";
+"patch.workspace_edit_footer" = "创建后，可在“文件”中的 Porky 工作区管理完整的 Bundle 目录树。";
 "patch.workspace" = "工作区";
 "patch.open_workspace" = "打开补丁文件";
 "patch.workspace_detail_footer" = "可直接编辑此 Bundle 目录树。应用或导出时会自动同步到加密的 .3105 软件包。";
@@ -210,8 +210,8 @@
 "patch.applied_message" = "所有补丁规则均已应用，原始文件已备份。";
 "patch.restored_message" = "原始文件已恢复。";
 "patch.reset_message" = "所有补丁文件已重置为应用时的软件包状态。";
-"patch.error.unsupported_format" = "这不是有效的 .3105 补丁软件包。";
-"patch.error.unsupported_version" = "此补丁需要更高版本的 3105。请更新应用后再导入。";
+"patch.error.unsupported_format" = "这不是有效的 .Porky 补丁软件包。";
+"patch.error.unsupported_version" = "此补丁需要更高版本的 Porky。请更新应用后再导入。";
 "patch.error.password_or_corrupt" = "密码不正确，或软件包已被修改。";
 "patch.error.invalid_bundle" = "请输入有效的应用 bundle identifier，而不是容器 UUID。";
 "patch.error.unsafe_path" = "目标必须是应用数据容器内的安全相对路径。";
@@ -345,7 +345,7 @@
 "logs.empty_message" = "本次会话中的漏洞利用和编辑器活动将显示在这里。";
 
 "browser.title" = "应用数据浏览器";
-"browser.workspace" = "3105 工作区";
+"browser.workspace" = "Porky 工作区";
 "browser.workspace_subtitle" = "可在“我的 iPhone”中访问补丁和文件";
 "browser.loading" = "正在加载…";
 "browser.empty" = "无法解析任何应用 bundle。轻点“重试”再次扫描。";
@@ -483,7 +483,7 @@
 "tab.installed" = "已安装";
 "installed.search" = "搜索补丁或壁纸";
 "installed.empty_title" = "尚未安装内容";
-"installed.empty_message" = "导入 .3105 补丁或 .tendies 壁纸包即可开始。";
+"installed.empty_message" = "导入 .Porky 补丁或 .tendies 壁纸包即可开始。";
 "installed.loading" = "正在载入已安装内容…";
 "installed.kind.patch" = "补丁 · .3105";
 "installed.kind.wallpaper" = "壁纸 · .tendies";
@@ -499,7 +499,7 @@
 "repository.tools_settings_footer" = "启用的工具会显示在“探索”中，不再占用单独的标签页。";
 "repository.open_tool_hint" = "打开此内置工具";
 "repository.no_sources_title" = "没有软件源";
-"repository.no_sources_message" = "添加可信的 HTTPS 软件源以发现 .3105 补丁。";
+"repository.no_sources_message" = "添加可信的 HTTPS 软件源以发现 .Porky 补丁。";
 "repository.no_packages_title" = "没有可用软件包";
 "repository.no_packages_message" = "刷新已启用的软件源，或在“软件源”中检查状态。";
 "repository.featured" = "精选";
@@ -547,7 +547,7 @@
 "repository.download_package" = "下载";
 "repository.downloading_elapsed" = "正在下载 · %@";
 "repository.update_package" = "更新";
-"repository.install_footer" = "导入前，3105 会验证 HTTPS、SHA-256、软件包内容和 iOS 兼容性。";
+"repository.install_footer" = "导入前，Porky 会验证 HTTPS、SHA-256、软件包内容和 iOS 兼容性。";
 "repository.wallpaper_imported" = "壁纸包已通过验证并添加到“已安装”。请在那里打开、查看并应用。";
 "repository.by_version" = "%@ · 版本 %@";
 "repository.version_source" = "版本 %@ · %@";
@@ -598,7 +598,7 @@
 "wallpaper.install" = "应用";
 "wallpaper.install_warning_title" = "安装此壁纸包？";
 "wallpaper.install_warning_message" = "应用“%@”中的 %lld 张壁纸（iOS %@，%@）？现有壁纸不会改变。";
-"wallpaper.installed_by_3105" = "3105 添加的壁纸";
+"wallpaper.installed_by_3105" = "Porky 添加的壁纸";
 "wallpaper.custom_count" = "已添加的壁纸";
 "wallpaper.reset" = "重置精选集";
 "wallpaper.reset_footer" = "移除自定义精选集，包括其他工具添加的内容。Apple 默认精选集会保留。";
@@ -612,7 +612,7 @@
 "wallpaper.restore_title" = "恢复此次安装？";
 "wallpaper.restore_message" = "这将删除之前由 3105 添加的 %lld 个描述符目录。安装前已有的壁纸会保留。";
 "wallpaper.delete_title" = "移除已导入的软件包？";
-"wallpaper.delete_message" = "“%@”将从 3105 暂存区移除，不影响已安装的壁纸。";
+"wallpaper.delete_message" = "“%@”将从 Porky 暂存区移除，不影响已安装的壁纸。";
 "wallpaper.importing" = "正在验证 .tendies 软件包…";
 "wallpaper.installing" = "正在安全安装描述符…";
 "wallpaper.restoring" = "正在重置壁纸…";
@@ -623,7 +623,7 @@
 "wallpaper.install_done_opened" = "已打开 PosterBoard 以刷新集合。请从应用切换器中关闭它，然后检查锁定屏幕壁纸选择器。";
 "wallpaper.install_done_manual" = "请打开锁定屏幕壁纸选择器来刷新 PosterBoard。如果壁纸未出现，请从应用切换器关闭 PosterBoard 后重试。";
 "wallpaper.restore_done_title" = "安装已恢复";
-"wallpaper.restore_done_message" = "3105 添加的描述符已移除，并已请求 PosterBoard 刷新。";
+"wallpaper.restore_done_message" = "Porky 添加的描述符已移除，并已请求 PosterBoard 刷新。";
 "wallpaper.operation_failed" = "壁纸操作失败";
 "wallpaper.error.unsafe_container" = "PosterBoard 返回了不安全或异常的容器路径。";
 "wallpaper.error.store_unavailable" = "此 build 上无法访问 PosterBoard 扩展存储。";
@@ -633,10 +633,10 @@
 "wallpaper.error.symlink" = "壁纸包和目标目录不能包含符号链接。";
 "wallpaper.error.size" = "壁纸包超过 3105 的安全大小或项目数限制。";
 "wallpaper.error.no_descriptors" = "此软件包中没有找到受支持的壁纸描述符。";
-"wallpaper.error.access" = "3105 无法获得 com.apple.PosterBoard 的已验证读写权限。";
+"wallpaper.error.access" = "Porky 无法获得 com.apple.PosterBoard 的已验证读写权限。";
 "wallpaper.error.backup" = "无法写入恢复日志，因此已停止安装。";
 "wallpaper.error.install" = "安装失败，本次尝试添加的描述符已回滚。";
-"wallpaper.error.restore" = "3105 无法安全移除此安装中的全部描述符。";
+"wallpaper.error.restore" = "Porky 无法安全移除此安装中的全部描述符。";
 "wallpaper.error.unknown" = "发生意外错误。请查看会话日志了解详情。";
 "repository.for_you" = "为你推荐";
 "repository.new" = "最新";
@@ -645,7 +645,7 @@
 "repository.published" = "发布日期";
 "repository.more_patches" = "更多软件包";
 "repository.utilities" = "实用工具";
-"repository.home_no_sources_message" = "添加软件源后，主页会显示带图片的 3105 补丁。";
+"repository.home_no_sources_message" = "添加软件源后，主页会显示带图片的 Porky 补丁。";
 "repository.home_package_meta" = "%@ · %@";
 "repository.sources_hierarchy_footer" = "打开软件源可浏览标签及其中的软件包。请只添加你信任的软件源。";
 "repository.disable_source" = "停用软件源";

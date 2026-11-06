@@ -398,7 +398,7 @@ final class PackageRepositoryStore: ObservableObject {
                 identifier: "profile-switcher",
                 kind: .patch,
                 name: "Profile Switcher",
-                author: "3105 Community",
+                author: "Porky Community",
                 version: "1.0.0",
                 summary: "A portable workspace example with multiple bundle targets.",
                 details: nil,
@@ -613,7 +613,7 @@ enum PackageRepositoryNetworkClient {
         defer { session.invalidateAndCancel() }
 
         var request = URLRequest(url: url)
-        request.setValue("3105", forHTTPHeaderField: "User-Agent")
+        request.setValue("Porky", forHTTPHeaderField: "User-Agent")
         let (temporaryURL, response) = try await session.download(for: request)
         guard let response = response as? HTTPURLResponse,
               (200..<300).contains(response.statusCode),

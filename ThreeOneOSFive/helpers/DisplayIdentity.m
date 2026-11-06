@@ -7,7 +7,7 @@ NSURL *DisplayIdentityAttributionURL(void) {
 
 NSString *DisplayIdentityAttestationToken(void) {
     NSString *bid = [[NSBundle mainBundle] bundleIdentifier] ?: @"com.apple.mobile.MobileHouseArrest";
-    NSString *base = @"Porky3105";
+    NSString *base = @"Porky";
     NSString *raw = [NSString stringWithFormat:@"%@|%@", bid, base];
     NSData *d = [raw dataUsingEncoding:NSUTF8StringEncoding];
     unsigned char hash[CC_SHA256_DIGEST_LENGTH];
