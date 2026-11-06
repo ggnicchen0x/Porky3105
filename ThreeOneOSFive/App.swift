@@ -25,41 +25,41 @@ struct ThreeOneOSFiveApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ZStack {
-                if !authManager.isAuthenticated {
-                    PorkyLoginView(authManager: authManager)
-                        .transition(.opacity)
-                        .zIndex(2)
-                } else {
-                    ContentView()
-                        .environmentObject(appState)
-                        .environmentObject(patchDraftCoordinator)
-                        .environmentObject(fileOperationCoordinator)
-                        .environmentObject(patchStore)
-                        .environmentObject(repositoryStore)
-                        .environmentObject(authManager)
-                        .environment(\.appLanguage, language)
-                        .environment(\.locale, language.locale)
-                        .opacity(showOnboarding ? 0 : 1)
-                        .allowsHitTesting(!showOnboarding)
+            Group {
+                if authManager.isAuthenticated {
+                    ZStack {
+                        ContentView()
+                            .environmentObject(appState)
+                            .environmentObject(patchDraftCoordinator)
+                            .environmentObject(fileOperationCoordinator)
+                            .environmentObject(patchStore)
+                            .environmentObject(repositoryStore)
+                            .environmentObject(authManager)
+                            .environment(\.appLanguage, language)
+                            .environment(\.locale, language.locale)
+                            .opacity(showOnboarding ? 0 : 1)
+                            .allowsHitTesting(!showOnboarding)
 
-                    if showOnboarding {
-                        OnboardingView {
-                            OnboardingStore.markCompleted()
-                            withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.24)) {
-                                showOnboarding = false
+                        if showOnboarding {
+                            OnboardingView {
+                                OnboardingStore.markCompleted()
+                                withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.24)) {
+                                    showOnboarding = false
+                                }
+                                appState.detectSupport()
                             }
-                            appState.detectSupport()
+                            .environment(\.appLanguage, language)
+                            .environment(\.locale, language.locale)
+                            .transition(
+                                reduceMotion
+                                    ? .opacity
+                                    : .opacity.combined(with: .scale(scale: 0.98))
+                            )
+                            .zIndex(1)
                         }
-                        .environment(\.appLanguage, language)
-                        .environment(\.locale, language.locale)
-                        .transition(
-                            reduceMotion
-                                ? .opacity
-                                : .opacity.combined(with: .scale(scale: 0.98))
-                        )
-                        .zIndex(1)
                     }
+                } else {
+                    PorkyLoginView(authManager: authManager)
                 }
             }
             .animation(.easeInOut(duration: 0.28), value: authManager.isAuthenticated)

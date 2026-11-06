@@ -31,34 +31,36 @@ final class PorkyAuthManager: ObservableObject {
         let savedExpiry = defaults.string(forKey: expiryKey) ?? ""
         let savedTier = defaults.string(forKey: tierKey) ?? "VIP"
 
-        if !savedKey.isEmpty && savedStatus == "ACTIVE" {
-            // Check local expiry if present
-            let formatter = ISO8601DateFormatter()
-            formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-            var parsed = formatter.date(from: savedExpiry)
-            if parsed == nil {
-                formatter.formatOptions = [.withInternetDateTime]
-                parsed = formatter.date(from: savedExpiry)
-            }
-
-            if let date = parsed, date < Date() {
-                self.isAuthenticated = false
-                self.currentKey = savedKey
-                self.expiryDate = savedExpiry
-                self.errorMessage = "Your VIP license has expired."
-            } else {
-                self.isAuthenticated = true
-                self.currentKey = savedKey
-                self.expiryDate = savedExpiry
-                self.tier = savedTier
-
-                // Silent background verification
-                Task {
-                    await self.silentRevalidate()
-                }
-            }
-        } else {
+        guard !savedKey.isEmpty, savedStatus == "ACTIVE" else {
             self.isAuthenticated = false
+            self.currentKey = ""
+            return
+        }
+
+        // Check local expiry if present
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        var parsed = formatter.date(from: savedExpiry)
+        if parsed == nil {
+            formatter.formatOptions = [.withInternetDateTime]
+            parsed = formatter.date(from: savedExpiry)
+        }
+
+        if let date = parsed, date < Date() {
+            self.isAuthenticated = false
+            self.currentKey = savedKey
+            self.expiryDate = savedExpiry
+            self.errorMessage = "Your VIP license has expired."
+        } else {
+            self.isAuthenticated = true
+            self.currentKey = savedKey
+            self.expiryDate = savedExpiry
+            self.tier = savedTier
+
+            // Silent background verification
+            Task {
+                await self.silentRevalidate()
+            }
         }
     }
 
@@ -233,3 +235,4 @@ struct PorkyErrorDetail: Decodable {
     let title: String?
     let detail: String?
 }
+

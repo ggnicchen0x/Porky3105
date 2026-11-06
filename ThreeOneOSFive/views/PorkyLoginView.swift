@@ -19,19 +19,22 @@ struct PorkyLoginView: View {
 
             // Glowing ambient circles
             GeometryReader { proxy in
-                Circle()
-                    .fill(cyberGreen.opacity(0.12))
-                    .frame(width: proxy.size.width * 0.9)
-                    .blur(radius: 80)
-                    .position(x: proxy.size.width * 0.5, y: proxy.size.height * 0.2)
+                ZStack {
+                    Circle()
+                        .fill(cyberGreen.opacity(0.12))
+                        .frame(width: proxy.size.width * 0.9)
+                        .blur(radius: 80)
+                        .position(x: proxy.size.width * 0.5, y: proxy.size.height * 0.2)
 
-                Circle()
-                    .fill(darkGreen.opacity(0.08))
-                    .frame(width: proxy.size.width * 0.8)
-                    .blur(radius: 70)
-                    .position(x: proxy.size.width * 0.5, y: proxy.size.height * 0.8)
+                    Circle()
+                        .fill(darkGreen.opacity(0.08))
+                        .frame(width: proxy.size.width * 0.8)
+                        .blur(radius: 70)
+                        .position(x: proxy.size.width * 0.5, y: proxy.size.height * 0.8)
+                }
             }
             .ignoresSafeArea()
+            .allowsHitTesting(false)
 
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 24) {
@@ -297,3 +300,4 @@ struct PorkyLoginView: View {
         }
     }
 }
+
