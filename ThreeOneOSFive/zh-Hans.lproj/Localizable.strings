@@ -32,8 +32,8 @@
 "onboarding.language_subtitle" = "之后可在设置中更改。";
 "onboarding.language_hint" = "已选择：%@";
 "onboarding.welcome_title" = "欢迎使用 3105";
-"onboarding.welcome_message" = "由 YangJiii 开发";
-"onboarding.welcome_badge" = "官方 3105 标识";
+"onboarding.welcome_message" = "自定义与插件管理工具";
+"onboarding.welcome_badge" = "Porky 标识";
 "onboarding.versions_title" = "支持的 iOS 版本";
 "onboarding.versions_subtitle" = "3105 已在下列范围内验证。不支持的版本会被阻止。";
 "onboarding.versions_footer" = "本设备：iOS %@（%@）";
@@ -277,17 +277,6 @@
 "settings.sandbox_token" = "沙盒令牌";
 "settings.generate_token" = "生成令牌";
 "settings.token_footer" = "成功获得漏洞利用权限后可用。";
-"settings.credits" = "致谢";
-"settings.social_media" = "社交媒体";
-"social.github_role" = "3105 源代码";
-"social.iosvn_role" = "iOSVN 社区";
-"credit.yangjiii" = "开发者与设计者";
-"credit.forcequit" = "bad_query 漏洞利用";
-"credit.filzaslop" = "FilzaSlop — MHA-C2 与应用发现";
-"credit.pocket_poster" = "Pocket Poster、Nugget 与 .tendies 格式";
-"credit.sandbox_escape" = "FilzaSlop 沙盒逃逸基础";
-"credit.opa" = "Dopamine 越狱，kexploit 基础";
-"credit.seo" = "kexploit_opa334 移植";
 
 "gestalt.title" = "Gestalt 编辑器";
 "gestalt.apply_changes" = "应用更改";

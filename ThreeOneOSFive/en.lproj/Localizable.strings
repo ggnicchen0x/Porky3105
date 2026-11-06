@@ -32,8 +32,8 @@
 "onboarding.language_subtitle" = "You can change this later in Settings.";
 "onboarding.language_hint" = "Selected: %@";
 "onboarding.welcome_title" = "Welcome to 3105";
-"onboarding.welcome_message" = "Developed by YangJiii";
-"onboarding.welcome_badge" = "Official 3105 identity";
+"onboarding.welcome_message" = "Customization and tweak manager";
+"onboarding.welcome_badge" = "Porky identity";
 "onboarding.versions_title" = "Supported iOS versions";
 "onboarding.versions_subtitle" = "3105 is verified on the ranges below. Unsupported builds are blocked.";
 "onboarding.versions_footer" = "This device: iOS %@ (%@)";
@@ -277,17 +277,6 @@
 "settings.sandbox_token" = "Sandbox Token";
 "settings.generate_token" = "Generate Token";
 "settings.token_footer" = "Available after exploit access succeeds.";
-"settings.credits" = "Credits";
-"settings.social_media" = "Social media";
-"social.github_role" = "3105 source code";
-"social.iosvn_role" = "iOSVN Community";
-"credit.yangjiii" = "Developer & designer";
-"credit.forcequit" = "bad_query exploit";
-"credit.filzaslop" = "FilzaSlop — MHA-C2 and app discovery";
-"credit.pocket_poster" = "Pocket Poster, Nugget & .tendies format";
-"credit.sandbox_escape" = "FilzaSlop sandbox escape foundation";
-"credit.opa" = "Dopamine jailbreak, kexploit base";
-"credit.seo" = "kexploit_opa334 port";
 
 "gestalt.title" = "Gestalt Editor";
 "gestalt.apply_changes" = "Apply Changes";

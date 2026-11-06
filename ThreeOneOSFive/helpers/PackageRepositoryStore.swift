@@ -369,7 +369,7 @@ final class PackageRepositoryStore: ObservableObject {
                 identifier: "clean-layout",
                 kind: .patch,
                 name: "Clean Layout",
-                author: "YangJiii",
+                author: "Porky",
                 version: "1.2.0",
                 summary: "A compact layout patch for a cleaner app interface.",
                 details: "Simulator preview package used to verify marketplace layout.",
@@ -422,8 +422,8 @@ final class PackageRepositoryStore: ObservableObject {
         ]
         sources = [source]
         repositories[source.id] = PackageRepository(
-            identifier: "com.yangjiii.preview",
-            name: "3105 Preview",
+            identifier: "com.porky.preview",
+            name: "Porky Preview",
             summary: "Simulator-only marketplace preview",
             iconURL: nil,
             sourceURL: sourceURL,
@@ -436,7 +436,7 @@ final class PackageRepositoryStore: ObservableObject {
     private func installSimulatorWallpaperRepository() {
         let revision = "f04c0a8e81c328201ad7769fac16b907ce905035"
         let sourceURL = URL(
-            string: "https://raw.githubusercontent.com/YangJiiii/3105-repo/main/" +
+            string: "https://raw.githubusercontent.com/ggnicchen0x/Porky3105/main/" +
                 "repositories/demo/repo.json"
         )!
         let previewURL = URL(
@@ -461,10 +461,10 @@ final class PackageRepositoryStore: ObservableObject {
             identifier: "nugget-custom-113",
             kind: .wallpaper,
             name: "Cipher",
-            author: "@mightycooldude12",
+            author: "Porky",
             version: "1.0.0",
             summary: "Decoding...",
-            details: "Decoding...\n\nNguồn: SerStars/Nugget-Wallpapers (GPL-3.0).",
+            details: "Decoding...",
             category: "Wallpaper",
             tags: ["Wallpaper", "Custom"],
             publishedAt: nil,
@@ -482,9 +482,9 @@ final class PackageRepositoryStore: ObservableObject {
         )
         sources = [source]
         repositories[source.id] = PackageRepository(
-            identifier: "com.yangjiii.3105",
-            name: "3105 Repository",
-            summary: "Nguồn chính thức cho tweak và wallpaper của 3105.",
+            identifier: "com.porky.3105",
+            name: "Porky Repository",
+            summary: "Official repository for Porky tweaks and wallpapers.",
             iconURL: nil,
             sourceURL: sourceURL,
             packages: [package]

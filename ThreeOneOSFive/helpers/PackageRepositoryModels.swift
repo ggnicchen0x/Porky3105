@@ -237,7 +237,7 @@ enum PackageRepositoryLimits {
 
 enum PackageRepositoryDefaults {
     static let catalogURL = URL(
-        string: "https://raw.githubusercontent.com/YangJiiii/3105-repo/main/sources.json"
+        string: "https://raw.githubusercontent.com/ggnicchen0x/Porky3105/main/sources.json"
     )!
 }
 

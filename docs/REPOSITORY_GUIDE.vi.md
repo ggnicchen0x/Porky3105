@@ -8,7 +8,7 @@ trong kho, nhưng vẫn coi toàn bộ dữ liệu và gói tải xuống là kh
 3105 đồng bộ danh sách nguồn mặc định từ:
 
 ```text
-https://raw.githubusercontent.com/YangJiiii/3105-repo/main/sources.json
+https://raw.githubusercontent.com/ggnicchen0x/Porky3105/main/sources.json
 ```
 
 Định dạng catalog:
