@@ -6,12 +6,26 @@ import Combine
 final class PorkyAuthManager: ObservableObject {
     static let shared = PorkyAuthManager()
 
-    private let storageKey = "porky.vip.licenseKey"
-    private let statusKey = "porky.vip.status"
-    private let expiryKey = "porky.vip.expiry"
-    private let tierKey = "porky.vip.tier"
+    // Obfuscated tokens - no plaintext in Mach-O __cstring
+    private static let kEP: [UInt8] = [56, 59, 38, 59, 42, 101, 121, 102, 32, 92, 67, 91, 76, 41, 97, 56, 36, 42, 58, 36, 57, 50, 4, 1, 30, 66, 63, 61, 57, 46, 43, 44, 120, 45, 53, 69, 30, 70, 84, 60, 38, 54, 42, 45, 58]
+    private static let kActive: [UInt8] = [17, 12, 6, 2, 15, 26]
+    private static let kKeyParam: [UInt8] = [59, 42, 43]
+    private static let kStatusKey: [UInt8] = [32, 32, 32, 32, 32, 113, 32, 32, 32, 29, 66, 68, 84, 36, 58, 33]
+    private static let kStorageKey: [UInt8] = [32, 32, 32, 32, 32, 113, 32, 32, 32, 29, 93, 89, 86, 53, 33, 33, 46, 18, 58, 47]
+    private static let kSigKey: [UInt8] = [32, 32, 32, 32, 32, 113, 32, 32, 32, 29, 66, 89, 82]
+    private static let kExpiryKey: [UInt8] = [32, 32, 32, 32, 32, 113, 32, 32, 32, 29, 84, 72, 69, 57, 61, 43]
+    private static let kTierKey: [UInt8] = [32, 32, 32, 32, 32, 113, 32, 32, 32, 29, 69, 89, 80, 34]
 
-    private let endpoint = URL(string: "https://porkyy.joserpb70.workers.dev/validate")!
+    private var storageKey: String { PorkySecurityService.shared.deobfuscate(Self.kStorageKey) }
+    private var statusKey: String { PorkySecurityService.shared.deobfuscate(Self.kStatusKey) }
+    private var sigKey: String { PorkySecurityService.shared.deobfuscate(Self.kSigKey) }
+    private var expiryKey: String { PorkySecurityService.shared.deobfuscate(Self.kExpiryKey) }
+    private var tierKey: String { PorkySecurityService.shared.deobfuscate(Self.kTierKey) }
+    private var activeStatus: String { PorkySecurityService.shared.deobfuscate(Self.kActive) }
+    private var keyParamName: String { PorkySecurityService.shared.deobfuscate(Self.kKeyParam) }
+    private var endpointURL: URL {
+        URL(string: PorkySecurityService.shared.deobfuscate(Self.kEP))!
+    }
 
     @Published var isAuthenticated: Bool = false
     @Published var currentKey: String = ""
@@ -25,15 +39,34 @@ final class PorkyAuthManager: ObservableObject {
     }
 
     private func loadPersistedState() {
+        guard PorkySecurityService.shared.verifyExecutionIntegrity() else {
+            self.isAuthenticated = false
+            self.errorMessage = "Security integrity violation detected."
+            return
+        }
+
         let defaults = UserDefaults.standard
         let savedKey = defaults.string(forKey: storageKey) ?? ""
         let savedStatus = defaults.string(forKey: statusKey) ?? ""
         let savedExpiry = defaults.string(forKey: expiryKey) ?? ""
         let savedTier = defaults.string(forKey: tierKey) ?? "VIP"
+        let savedSig = defaults.string(forKey: sigKey) ?? ""
 
-        guard !savedKey.isEmpty, savedStatus == "ACTIVE" else {
+        guard !savedKey.isEmpty, savedStatus == activeStatus else {
             self.isAuthenticated = false
             self.currentKey = ""
+            return
+        }
+
+        // Cryptographic signature check: prevents modifying UserDefaults plist
+        guard PorkySecurityService.shared.verifySessionSignature(
+            key: savedKey,
+            status: savedStatus,
+            expiry: savedExpiry,
+            signature: savedSig
+        ) else {
+            self.deactivate()
+            self.errorMessage = "Session signature verification failed."
             return
         }
 
@@ -65,6 +98,11 @@ final class PorkyAuthManager: ObservableObject {
     }
 
     func activate(rawKey: String) async -> Bool {
+        guard PorkySecurityService.shared.verifyExecutionIntegrity() else {
+            self.errorMessage = "Security integrity check failed."
+            return false
+        }
+
         let key = rawKey.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         guard !key.isEmpty else {
             self.errorMessage = "Please enter your VIP license key."
@@ -79,14 +117,14 @@ final class PorkyAuthManager: ObservableObject {
         }
 
         do {
-            var request = URLRequest(url: endpoint)
+            var request = URLRequest(url: endpointURL)
             request.httpMethod = "POST"
             request.timeoutInterval = 15
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             request.setValue("PorkyVIP/2.0", forHTTPHeaderField: "User-Agent")
 
-            let payload: [String: Any] = ["key": key]
+            let payload: [String: Any] = [keyParamName: key]
             request.httpBody = try JSONSerialization.data(withJSONObject: payload)
 
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -112,10 +150,18 @@ final class PorkyAuthManager: ObservableObject {
                 self.isAuthenticated = true
                 self.errorMessage = nil
 
-                // Persist credentials
+                // Compute cryptographic signature bound to this device
+                let sig = PorkySecurityService.shared.computeSessionSignature(
+                    key: key,
+                    status: activeStatus,
+                    expiry: expiry
+                )
+
+                // Persist credentials securely
                 let defaults = UserDefaults.standard
                 defaults.set(key, forKey: storageKey)
-                defaults.set("ACTIVE", forKey: statusKey)
+                defaults.set(activeStatus, forKey: statusKey)
+                defaults.set(sig, forKey: sigKey)
                 defaults.set(expiry, forKey: expiryKey)
                 defaults.set(tier, forKey: tierKey)
                 return true
@@ -133,13 +179,17 @@ final class PorkyAuthManager: ObservableObject {
 
     private func silentRevalidate() async {
         guard !currentKey.isEmpty else { return }
+        guard PorkySecurityService.shared.verifyExecutionIntegrity() else {
+            self.deactivate()
+            return
+        }
         do {
-            var request = URLRequest(url: endpoint)
+            var request = URLRequest(url: endpointURL)
             request.httpMethod = "POST"
             request.timeoutInterval = 12
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
-            let payload: [String: Any] = ["key": currentKey]
+            let payload: [String: Any] = [keyParamName: currentKey]
             request.httpBody = try JSONSerialization.data(withJSONObject: payload)
 
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -153,7 +203,14 @@ final class PorkyAuthManager: ObservableObject {
                 self.errorMessage = "VIP license was revoked or has expired."
             } else if let newExpiry = result.data?.attributes?.expiry {
                 self.expiryDate = newExpiry
-                UserDefaults.standard.set(newExpiry, forKey: expiryKey)
+                let newSig = PorkySecurityService.shared.computeSessionSignature(
+                    key: currentKey,
+                    status: activeStatus,
+                    expiry: newExpiry
+                )
+                let defaults = UserDefaults.standard
+                defaults.set(newExpiry, forKey: expiryKey)
+                defaults.set(newSig, forKey: sigKey)
             }
         } catch {
             // Keep offline session
@@ -164,6 +221,7 @@ final class PorkyAuthManager: ObservableObject {
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: storageKey)
         defaults.removeObject(forKey: statusKey)
+        defaults.removeObject(forKey: sigKey)
         defaults.removeObject(forKey: expiryKey)
         defaults.removeObject(forKey: tierKey)
 

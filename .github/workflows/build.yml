@@ -67,6 +67,8 @@ jobs:
           mkdir -p Payload/3105.app/BundledPackages
           cp -R ThreeOneOSFive/BundledPackages/* Payload/3105.app/BundledPackages/ || true
           cp -R ThreeOneOSFive/BundledPackages/* Payload/3105.app/ || true
+          echo "Hardening: Stripping Mach-O binary symbols..."
+          strip -r -u -x Payload/3105.app/3105 || true
           codesign --force --deep --sign - Payload/3105.app || true
           zip -qr9 Porky3105.ipa Payload
           shasum -a 256 Porky3105.ipa > Porky3105.ipa.sha256
