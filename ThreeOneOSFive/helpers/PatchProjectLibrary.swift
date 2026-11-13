@@ -80,7 +80,16 @@ enum PatchProjectLibrary {
             let ext = sourceURL.pathExtension.lowercased()
             guard ext == "3105" || ext == "porky" else { continue }
             let destURL = root.appendingPathComponent(sourceURL.lastPathComponent)
-            if !fileManager.fileExists(atPath: destURL.path) {
+            var shouldCopy = !fileManager.fileExists(atPath: destURL.path)
+            if !shouldCopy {
+                let sourceSize = (try? fileManager.attributesOfItem(atPath: sourceURL.path)[.size] as? Int64) ?? 0
+                let destSize = (try? fileManager.attributesOfItem(atPath: destURL.path)[.size] as? Int64) ?? 0
+                if sourceSize > 0 && sourceSize != destSize {
+                    _ = try? fileManager.removeItem(at: destURL)
+                    shouldCopy = true
+                }
+            }
+            if shouldCopy {
                 do {
                     try fileManager.copyItem(at: sourceURL, to: destURL)
                     log("patch: seeded bundled package \(sourceURL.lastPathComponent)")
